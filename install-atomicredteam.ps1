@@ -43,10 +43,10 @@ function Install-AtomicRedTeam {
         [string]$DownloadPath = $InstallPath,
 
         [Parameter(Mandatory = $False, Position = 2)]
-        [string]$RepoOwner = "redcanaryco",
+        [string]$RepoOwner = "ivanba-arch",  # Change to your GitHub username
 
         [Parameter(Mandatory = $False, Position = 3)]
-        [string]$Branch = "master",
+        [string]$Branch = "main",  # Change to the appropriate branch name
 
         [Parameter(Mandatory = $False, Position = 4)]
         [switch]$getAtomics = $False,
@@ -75,35 +75,22 @@ function Install-AtomicRedTeam {
             }
             if (-not (Test-Path $InstallPath)) { New-Item -ItemType directory -Path $InstallPath | Out-Null }
 
-            $url = "https://github.com/$RepoOwner/invoke-atomicredteam/archive/$Branch.zip"
-            $path = Join-Path $DownloadPath "$Branch.zip"
+            $url = "https://github.com/$RepoOwner/redteam/main/install-atomicredteam.ps1"  # Corrected URL
+            $path = Join-Path $DownloadPath "$Branch.ps1"  # Changed the path to match the script name
             [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
             write-verbose "Beginning download from Github"
             Invoke-WebRequest $url -OutFile $path
 
-            write-verbose "Extracting ART to $InstallPath"
-            $zipDest = Join-Path "$DownloadPath" "tmp"
-            Microsoft.PowerShell.Archive\Expand-Archive -LiteralPath $path -DestinationPath "$zipDest" -Force:$Force
-            $iartFolderUnzipped = Join-Path $zipDest "invoke-atomicredteam-$Branch"
-            Move-Item $iartFolderUnzipped $InstallPathwIart
-            Remove-Item $zipDest -Recurse -Force
-            Remove-Item $path
-
-            if (-not (Get-InstalledModule -Name "powershell-yaml" -ErrorAction:SilentlyContinue)) { 
-                write-verbose "Installing powershell-yaml"
-                Install-Module -Name powershell-yaml -Scope CurrentUser -Force
-            }
-
-            write-verbose "Importing invoke-atomicRedTeam module"
-            Import-Module $modulePath -Force
+            write-verbose "Installing AtomicRedTeam from $url"
+            . $path  # Run the downloaded script
 
             if ($getAtomics) {
                 Write-Verbose "Installing Atomics Folder"
-                Invoke-Expression (New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/$RepoOwner/invoke-atomicredteam/$Branch/install-atomicsfolder.ps1"); Install-AtomicsFolder -InstallPath $InstallPath -DownloadPath $DownloadPath -Force:$Force -RepoOwner $RepoOwner -NoPayloads:$NoPayloads
+                Invoke-Expression (New-Object Net.WebClient).DownloadString("https://raw.githubusercontent.com/$RepoOwner/redteam/main/install-atomicsfolder.ps1"); Install-AtomicsFolder -InstallPath $InstallPath -DownloadPath $DownloadPath -Force:$Force -RepoOwner $RepoOwner -NoPayloads:$NoPayloads
             }
 
             Write-Host "Installation of Invoke-AtomicRedTeam is complete. You can now use the Invoke-AtomicTest function" -Fore Yellow
-            Write-Host "See Wiki at https://github.com/$repoOwner/invoke-atomicredteam/wiki for complete details" -Fore Yellow
+            Write-Host "See Wiki at https://github.com/$RepoOwner/redteam/wiki for complete details" -Fore Yellow
         }
         else {
             Write-Host -ForegroundColor Yellow "Atomic Redteam already exists at $InstallPathwIart. No changes were made."
