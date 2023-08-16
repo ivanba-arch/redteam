@@ -7,3 +7,4 @@ pwsh -Command "IEX (IWR 'https://raw.githubusercontent.com/redcanaryco/invoke-at
 sudo mkdir -p /AtomicRedTeam/atomics/
 sudo cp -r TR-Blogs/atomic-red-docker/atomics-overrides /AtomicRedTeam/atomics
 sudo cp TR-Blogs/atomic-red-docker/RunTests.ps1 /root
+echo "Script completed" > /tmp/script_status.log
