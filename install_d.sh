@@ -16,7 +16,7 @@ cat << "EOF"
 
 EOF
 echo
-echo "         LOADING . . ."
+echo "         LOADING2 . . ."
 echo
 echo "         Please wait, this could take a few minutes"
 echo 
