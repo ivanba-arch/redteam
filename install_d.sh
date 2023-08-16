@@ -1,5 +1,8 @@
 #!/bin/bash
 clear
+echo
+echo
+echo
 cat << "EOF"
 
           /$$$$$$ /$$   /$$ /$$    /$$  /$$$$$$  /$$   /$$ /$$$$$$$$        /$$$$$$  /$$$$$$$$ /$$$$$$  /$$      /$$ /$$$$$$  /$$$$$$ 
@@ -12,13 +15,15 @@ cat << "EOF"
          |______/|__/  \__/    \_/     \______/ |__/  \__/|________/      |__/  |__/   |__/   \______/ |__/     |__/|______/ \______/
 
 EOF
-
-echo "LOADING . . ."
 echo
-echo "Please wait, this could take a few minutes"
+echo "         LOADING . . ."
+echo
+echo "         Please wait, this could take a few minutes"
 echo 
-
+echo
 pwsh -Command "IEX (IWR 'https://raw.githubusercontent.com/redcanaryco/invoke-atomicredteam/master/install-atomicredteam.ps1' -UseBasicParsing); Install-AtomicRedTeam -getAtomics" -Force
 echo "Script completed" > /tmp/install_remote_d.log
 echo
 echo
+pwsh Import-Module "/AtomicRedTeam/invoke-atomicredteam/Invoke-AtomicRedTeam.psd1" -Force
+pwsh
