@@ -25,6 +25,10 @@ pwsh -Command "IEX (IWR 'https://raw.githubusercontent.com/redcanaryco/invoke-at
 echo "Script completed" > /tmp/install_remote_d.log
 echo
 echo
-pwsh "Import-Module '/AtomicRedTeam/invoke-atomicredteam/Invoke-AtomicRedTeam.psd1' -Force"
+echo
+echo           USER ACTION REQUIRED:
+echo      "Please execute: Import-Module '/AtomicRedTeam/invoke-atomicredteam/Invoke-AtomicRedTeam.psd1' -Force"
+echo
+echo
 pwsh
 
